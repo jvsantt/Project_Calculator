@@ -1,163 +1,136 @@
-class CalcController{
-
-    constructor(){
-
-        this.operation = [];
-        this._locale = ('pt-BR');
-        this._displayCalcEl = document.querySelector ("#display");
-        this._dateEl = document.querySelector ("#hora");
-        this._timeEl = document.querySelector ("#data");
-        this._currentDate;
-        this.initialize();
-        this.initButtonsEvents();
-        this.addEventListenerAll();
-
+class CalcController {
+    constructor() {
+      this.operation = [];
+      this._locale = "pt-BR";
+      this._displayCalcEl = document.querySelector("#display");
+      this._dateEl = document.querySelector("#data");
+      this._timeEl = document.querySelector("#hora");
+      this._currentDate;
+      this.initialize();
+      this.initButtonsEvents();
+      // this.addEventListenerAll();
     }
 
-    initialize(){
+    initialize() {
+      this.setDisplayDateTime();
+
+      setInterval(() => {
         this.setDisplayDateTime();
-        
-        setInterval(()=>{
-            this.setDisplayDateTime();
-
-        }, 1000 );
-
+      }, 1000);
     }
-    addEventListenerAll(element, events, fn){
-
-        events.split(' ').forEach(event => {
-
-            element.addEventListener(event, fn, false);
-        });
-
+    addEventListenerAll(element, events, fn) {
+      events.split(" ").forEach(event => {
+        element.addEventListener(event, fn, false);
+      });
     }
 
-    clearAll(){
+    clearAll() {}
 
+    clearEntry() {}
 
+    addOperation(value) {
+      this._operation.push(value);
+    }
+    setError() {
+      this.displayCalc = "Error";
     }
 
-    clearEntry(){
+    execBtn(value) {
+      switch (value) {
+        case "ac":
+          this.clearAll;
+          break;
+        case "ce":
+          this.clearEntry;
 
+        case "soma":
+          this.clearEntry;
+          break;
 
-    }
+        case "subtacao":
+          this.clearEntry;
+          break;
 
-    addOperation(value){
-        this._operation.push(value);
+        case "divisao":
+          this.clearEntry;
+          break;
 
+        case "multiplicacao":
+          this.clearEntry;
+          break;
 
-    }
-    setError(){
-        this.displayCalc = 'Error'
-    };
+        case "porcento":
+          this.clearEntry;
+          break;
 
-    execBtn(value){
+        case "igual":
+          this.clearEntry;
+          break;
 
-        switch (value){
-
-            case 'ac':
-                this.clearAll;
-            break;
-            case 'ce':
-                this.clearEntry;
-
-            case 'soma':
-                this.clearEntry;
-            break;
-
-            case 'subtacao':
-                this.clearEntry;
-            break;
-
-            case 'divisao':
-                this.clearEntry;
-            break;
-
-            case 'multiplicacao':
-                this.clearEntry;
-            break;
-
-            case 'porcento':
-                this.clearEntry;
-            break;
-
-            case 'igual':
-                this.clearEntry;
-            break;
-
-                default:
-                    this.setError();
-                break;
-        }
+        default:
+          this.setError();
+          break;
+      }
     }
 
     newMethod() {
-        return this;
+      return this;
     }
 
-    initButtonsEvents(){
+    initButtonsEvents() {
+      let buttons = document.querySelectorAll("#buttons > g, #parts > g");
 
-       let buttons = document.querySelectorAll("#buttons > g, #parts > g")
+      buttons.forEach((btn, index) => {
+        this.addEventListenerAll(btn, "click drag mouseover", e => {
+          let textBtn = btn.className.baseVal.replace("btn-", "");
 
-            buttons.forEach((btn, index)=>{
-
-                this.addEventListenerAll(btn,'click drag mouseover', e=> {
-
-                    let texBtn = btn.className.baseVal.replace("btn-","")
-                    
-                    this.execBtn(textBtn);
-                });
-
-                this.addEventListenerAll(btn, "mouseover mouseup mousedown", e =>{
-
-                    btn.style.cursor = "pointer";
-                })
-            });
-       };
-
-    setDisplayDateTime(){
-        this.displayDate = this.currentDate.toTimeString(this._locale, {
-            day: "2-digit",
-            month:"long",
-            year:"numeric"
+          this.execBtn(textBtn);
         });
-            this.displayTime = this.currentDate.toDateString(this._locale);
 
+        this.addEventListenerAll(btn, "mouseover mouseup mousedown", e => {
+          btn.style.cursor = "pointer";
+        });
+      });
     }
 
-
-    get displayTime(){
-        return this._timeEl.innerHTML;
+    setDisplayDateTime() {
+      this.displayDate = this.currentDate.toLocaleDateString(this._locale, {
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      });
+      this.displayTime = this.currentDate.toLocaleTimeString(this._locale);
     }
 
-    set displayTime(value){
-        return this._timeEl.innerHTML = value;
-
-    }
-    
-    get displayDate(){
-        return this._dateEl.innerHTML;
-
+    get displayTime() {
+      return this._timeEl.innerHTML;
     }
 
-    set displayDate(value){
-        return this._dateEl.innerHTML = value;
+    set displayTime(value) {
+      return (this._timeEl.innerHTML = value);
     }
 
-    get displayCalc(){
-        return this._displayCalcEl.innerHTML;
+    get displayDate() {
+      return this._dateEl.innerHTML;
     }
 
-    set displayCalc(value){
-        this._displayCalcEl.innerHTML = value;
+    set displayDate(value) {
+      return (this._dateEl.innerHTML = value);
     }
 
-    get currentDate(){
-        return new Date();
+    get displayCalc() {
+      return this._displayCalcEl.innerHTML;
     }
-    
-    set currentDate(value){
-        this._currentDate = value;
+
+    set displayCalc(value) {
+      this._displayCalcEl.innerHTML = value;
     }
-        
-}
+
+    get currentDate() {
+      return new Date();
+    }
+
+    set currentDate(value) {
+      this._currentDate = value;
+    }
+  }
